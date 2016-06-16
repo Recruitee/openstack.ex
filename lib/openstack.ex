@@ -61,7 +61,7 @@ defmodule Openstack do
 
   def endpoint(token, type, interface, region) do
     with {:ok, endpoints} <- endpoint(token, type) do
-      case Enum.find endpoints, &(&1["interface"] == interface and &1["region"] == region) do
+      case Enum.find endpoints, &(&1["interface"] == interface and (&1["region"] == region or &1["region_id"] == region)) do
         %{"url" => url} ->
           case type do
             "identity" -> {:ok, String.replace(url, "v2.0", "v3")}
